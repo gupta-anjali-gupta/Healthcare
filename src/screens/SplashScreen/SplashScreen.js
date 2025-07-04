@@ -18,7 +18,7 @@ const SplashScreen = props => {
       }, 2000);
     } else {
       setTimeout(() => {
-        navigation.navigate('SignIn');
+        navigation.navigate('BottomTab');
       }, 2000);
     }
   };

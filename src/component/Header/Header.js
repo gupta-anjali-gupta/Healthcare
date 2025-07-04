@@ -1,12 +1,16 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import CustomText from '../CustomText/CustomText';
 import appTheme from '../../utils/appTheme';
 
-const Header = ({ title, leftIcon, leftIcon2, rightIcon }) => {
+const Header = ({ title, leftIcon, leftIconPress, leftIcon2, rightIcon }) => {
   return (
     <View style={styles.header}>
-      {leftIcon && <Image source={leftIcon} style={styles.icon} />}
+      {leftIcon && (
+        <TouchableOpacity onPress={leftIconPress}>
+          <Image source={leftIcon} style={styles.icon} />
+        </TouchableOpacity>
+      )}
       {leftIcon2 && leftIcon2}
       <CustomText text={title} color={appTheme.secondary} />
       <View style={styles.right}>

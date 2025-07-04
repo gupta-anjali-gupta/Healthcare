@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "../../component/Container/Container";
 import Header from "../../component/Header/Header";
 import Icons from "../../utils/Icons";
 import LottieView from "lottie-react-native";
-import { FlatList, Image, StyleSheet, View } from "react-native";
+import { Alert, FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import appTheme from "../../utils/appTheme";
 import CustomText from "../../component/CustomText/CustomText";
 import CustomButton from "../../component/CustomButton/CustomButton";
+import { pickImageOrVideo } from "../../utils/utility";
+import { uploadToCloudinary } from "../../utils/apiHelper";
 
 const ChatScreen = () => {
+const [pickedFile, setPickedFile] = useState(null);
+
   const imagesJson = [
     { id: "icon1", icon: Icons.girl, title: "Test 1" },
     { id: "icon2", icon: Icons.girl, title: "Test 2" },
     { id: "icon3", icon: Icons.girl, title: "Test 3" },
     { id: "icon4", icon: Icons.girl, title: "Test 4" },
   ];
+
+const handleUploadFile=()=>{
+    if (!pickedFile) {
+      Alert.alert("Please pick a file first");
+      return;
+    }
+
+    console.log("File ready to upload:", pickedFile);
+    uploadToCloudinary(pickedFile);
+}
+
   return (
     <Container customStyle={{ paddingHorizontal: 20 }}>
       <Header
@@ -81,7 +96,12 @@ const ChatScreen = () => {
         </View>
 
         <View style={styles.uploadView}>
-          <View style={[styles.fileTab, { gap: 20 }]}>
+          <TouchableOpacity onPress={()=>{
+            pickImageOrVideo((file) => {
+              setPickedFile(file);
+              console.log("Picked file:", file);
+            })
+          }}  style={[styles.fileTab, { gap: 20 }]}>
             <LottieView
               source={require("../../assets/lottie/linkupload.json")}
               autoPlay
@@ -89,8 +109,8 @@ const ChatScreen = () => {
               style={{ width: 60, height: 60 }}
             />
             <CustomText text={"Upload Link"} fontSize={14} />
-          </View>
-          <View style={styles.fileTab}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.fileTab}>
             <LottieView
               source={require("../../assets/lottie/upload.json")}
               autoPlay
@@ -98,11 +118,11 @@ const ChatScreen = () => {
               style={{ width: 100, height: 100 }}
             />
             <CustomText text={"Upload File"} fontSize={14} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <CustomButton
-        // onPress={handleLogin}
+        onPress={handleUploadFile}
         title={"Continue"}
         color={appTheme.white}
         fontSize={14}

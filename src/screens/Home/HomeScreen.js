@@ -9,21 +9,34 @@ import CustomText from '../../component/CustomText/CustomText';
 import StringConstants from '../../utils/StringConstants';
 import CustomButton from '../../component/CustomButton/CustomButton';
 
-const HomeScreen = () => {
+const HomeScreen = props => {
+  const navigation = props.navigation;
   const buttons = [
     { id: 0, title: 'Questions', icon: Icons.ques },
     { id: 1, title: 'Reminders', icon: Icons.reminder },
     { id: 2, title: 'Messages', icon: Icons.messages },
     { id: 3, title: 'Calendar', icon: Icons.calendr },
+    
+    
   ];
   return (
     <Container customStyle={{ paddingHorizontal: 20 }} scrollEnabled>
-      <Header leftIcon={Icons.bar} rightIcon={Icons.mic} />
+      <Header
+        leftIcon={Icons.bar}
+        leftIconPress={() => navigation.openDrawer()}
+        rightIcon={Icons.mic}
+      />
       <View>
         <FlatList
           data={buttons}
           renderItem={({ item }) => (
             <IconButton
+            onPress={() => {
+              if(item.title==='Reminders')
+              {
+                navigation.navigate('Reminder');
+              }
+            }}
               leftText={item.title}
               icon={item.icon}
               size={27}
